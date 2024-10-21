@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bouncing Ball Game with Location</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+      }
+      canvas {
+        border: 1px solid #000;
+        background-color: #fff;
+        margin-bottom: 20px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
+    <button id="locationButton">Get Current Location</button>
+    <p id="locationDisplay"></p>
+
+    <script>
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+      const locationButton = document.getElementById("locationButton");
+      const locationDisplay = document.getElementById("locationDisplay");
+
+      let ball = {
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        radius: 20,
+        dx: 2,
+        dy: 2,
+        color: "blue",
+      };
+
+      function drawBall() {
+        ctx.beginPath();
+        ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+        ctx.fillStyle = ball.color;
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      function update() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBall();
+
+        if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
+          ball.dx = -ball.dx;
+          changeColor();
+        }
+        if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+          ball.dy = -ball.dy;
+          changeColor();
+        }
+
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+
+        requestAnimationFrame(update);
+      }
+
+      function changeColor() {
+        ball.color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+      }
+
+      // Function to get user's location
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+          locationDisplay.textContent =
+            "Geolocation is not supported by this browser.";
+        }
+      }
+
+      function showPosition(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+      }
+
+      function showError(error) {
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            locationDisplay.textContent =
+              "User denied the request for Geolocation.";
+            break;
+          case error.POSITION_UNAVAILABLE:
+            locationDisplay.textContent =
+              "Location information is unavailable.";
+            break;
+          case error.TIMEOUT:
+            locationDisplay.textContent =
+              "The request to get user location timed out.";
+            break;
+          case error.UNKNOWN_ERROR:
+            locationDisplay.textContent = "An unknown error occurred.";
+            break;
+        }
+      }
+
+      // Start the animation
+      update();
+
+      // Add event listener to the button
+      locationButton.addEventListener("click", getLocation);
+    </script>
+  </body>
+</html>

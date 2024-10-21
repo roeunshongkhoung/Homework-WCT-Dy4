@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bouncing Ball Game</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+      }
+      canvas {
+        border: 1px solid #000;
+        background-color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
+
+    <script>
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+
+      let ball = {
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        radius: 20,
+        dx: 2, // Change in x (velocity)
+        dy: 2, // Change in y (velocity)
+        color: "blue",
+      };
+
+      function drawBall() {
+        ctx.beginPath();
+        ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+        ctx.fillStyle = ball.color;
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      function update() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBall();
+
+        // Bounce off walls
+        if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
+          ball.dx = -ball.dx; // Reverse direction
+          changeColor(); // Change color on edge hit
+        }
+        if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+          ball.dy = -ball.dy; // Reverse direction
+          changeColor(); // Change color on edge hit
+        }
+
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+
+        requestAnimationFrame(update);
+      }
+
+      function changeColor() {
+        ball.color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+      }
+
+      // Start the animation
+      update();
+    </script>
+  </body>
+</html>

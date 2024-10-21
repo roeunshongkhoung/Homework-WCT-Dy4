@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas Drawing</title>
+    <style>
+      canvas {
+        border: 1px solid black;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header with name -->
+    <header>
+      <h1>Your Name</h1>
+    </header>
+
+    <!-- Section with a brief description -->
+    <section>
+      <h2>About Me</h2>
+      <p>
+        Hello! I'm [Your Name], and I have a passion for exploring new ideas and
+        hobbies. Whether it's reading, writing, or learning new skills, I love
+        diving deep into things that help me grow intellectually and creatively.
+      </p>
+    </section>
+
+    <!-- Main content with favorite hobby -->
+    <section>
+      <h2>My First Webpage</h2>
+      <p>
+        One of my favorite hobbies is reading. It allows me to explore new
+        ideas, expand my knowledge, and dive into imaginative worlds. Whether
+        it’s fiction, non-fiction, or poetry, I find joy in discovering
+        different perspectives and stories.
+      </p>
+
+      <h3>3 Things I Enjoy About Reading</h3>
+      <ul>
+        <li>It broadens my understanding of various cultures and ideas.</li>
+        <li>It helps me relax and unwind after a long day.</li>
+        <li>It sparks creativity and inspires new thoughts.</li>
+      </ul>
+    </section>
+
+    <!-- Canvas Section -->
+    <section>
+      <h2>Canvas Drawing</h2>
+      <canvas id="myCanvas" width="400" height="400"></canvas>
+    </section>
+
+    <!-- Footer with contact information -->
+    <footer>
+      <p>
+        Contact me:
+        <a href="mailto:your.email@example.com">your.email@example.com</a>
+      </p>
+    </footer>
+
+    <script>
+      const canvas = document.getElementById("myCanvas");
+      const ctx = canvas.getContext("2d");
+
+      // Draw a rectangle
+      ctx.fillStyle = "blue"; // Fill color for the rectangle
+      ctx.fillRect(50, 50, 150, 100); // x, y, width, height
+
+      // Draw a circle
+      ctx.beginPath(); // Start a new path
+      ctx.arc(300, 150, 50, 0, Math.PI * 2); // x, y, radius, startAngle, endAngle
+      ctx.fillStyle = "green"; // Fill color for the circle
+      ctx.fill(); // Fill the circle
+      ctx.closePath(); // Close the path
+
+      // Draw a line
+      ctx.beginPath(); // Start a new path
+      ctx.moveTo(50, 250); // Move to starting point
+      ctx.lineTo(350, 250); // Draw line to this point
+      ctx.strokeStyle = "red"; // Color for the line
+      ctx.lineWidth = 5; // Width of the line
+      ctx.stroke(); // Apply stroke
+      ctx.closePath(); // Close the path
+    </script>
+  </body>
+</html>

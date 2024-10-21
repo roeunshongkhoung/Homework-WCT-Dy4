@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Hobby Page</title>
+    <style>
+      .media-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header with name -->
+    <header>
+      <h1>Your Name</h1>
+    </header>
+
+    <!-- Section with a brief description -->
+    <section>
+      <h2>About Me</h2>
+      <p>
+        Hello! I'm [Your Name], and I have a passion for exploring new ideas and
+        hobbies. Whether it's reading, writing, or learning new skills, I love
+        diving deep into things that help me grow intellectually and creatively.
+      </p>
+    </section>
+
+    <!-- Main content with favorite hobby -->
+    <section>
+      <h2>My First Webpage</h2>
+      <p>
+        One of my favorite hobbies is reading. It allows me to explore new
+        ideas, expand my knowledge, and dive into imaginative worlds. Whether
+        it’s fiction, non-fiction, or poetry, I find joy in discovering
+        different perspectives and stories.
+      </p>
+
+      <h3>3 Things I Enjoy About Reading</h3>
+      <ul>
+        <li>It broadens my understanding of various cultures and ideas.</li>
+        <li>It helps me relax and unwind after a long day.</li>
+        <li>It sparks creativity and inspires new thoughts.</li>
+      </ul>
+    </section>
+
+    <!-- Embedding a YouTube video with custom controls -->
+    <section>
+      <h2>Related Video</h2>
+      <div id="video-container">
+        <iframe
+          id="youtube-video"
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/VIDEO_ID"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+        <div class="media-controls">
+          <button onclick="togglePlay()">Play/Pause</button>
+          <label for="video-volume">Volume:</label>
+          <input
+            type="range"
+            id="video-volume"
+            min="0"
+            max="100"
+            value="100"
+            onchange="setVolume(this.value)"
+          />
+        </div>
+      </div>
+      <p>
+        This is a great video that discusses various aspects of reading and its
+        benefits!
+      </p>
+    </section>
+
+    <!-- Embedding an audio file with custom controls -->
+    <section>
+      <h2>Listen to This!</h2>
+      <audio id="audio-player" controls>
+        <source src="audio-file.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+      <div class="media-controls">
+        <button onclick="toggleAudioPlay()">Play/Pause Audio</button>
+        <label for="audio-volume">Volume:</label>
+        <input
+          type="range"
+          id="audio-volume"
+          min="0"
+          max="100"
+          value="100"
+          onchange="setAudioVolume(this.value)"
+        />
+      </div>
+      <p>Enjoy this audio file while you browse the page!</p>
+    </section>
+
+    <!-- Footer with contact information -->
+    <footer>
+      <p>
+        Contact me:
+        <a href="mailto:your.email@example.com">your.email@example.com</a>
+      </p>
+    </footer>
+
+    <script>
+      // YouTube Video Controls
+      const youtubeVideo = document.getElementById("youtube-video");
+      const videoContainer = document.getElementById("video-container");
+
+      function togglePlay() {
+        const playerState =
+          youtubeVideo.contentWindow.document.querySelector("body").style
+            .display;
+        if (playerState === "none") {
+          youtubeVideo.contentWindow.postMessage(
+            '{"event":"command","func":"playVideo","args":""}',
+            "*"
+          );
+        } else {
+          youtubeVideo.contentWindow.postMessage(
+            '{"event":"command","func":"pauseVideo","args":""}',
+            "*"
+          );
+        }
+      }
+
+      function setVolume(value) {
+        const volumeLevel = value / 100;
+        youtubeVideo.contentWindow.postMessage(
+          `{"event":"command","func":"setVolume","args":[${volumeLevel}]}`,
+          "*"
+        );
+      }
+
+      // Audio Controls
+      const audioPlayer = document.getElementById("audio-player");
+
+      function toggleAudioPlay() {
+        if (audioPlayer.paused) {
+          audioPlayer.play();
+        } else {
+          audioPlayer.pause();
+        }
+      }
+
+      function setAudioVolume(value) {
+        audioPlayer.volume = value / 100;
+      }
+    </script>
+  </body>
+</html>

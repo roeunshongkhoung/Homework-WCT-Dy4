@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Offline Capable Webpage</title>
+  </head>
+  <body>
+    <header>
+      <h1>My Offline Webpage</h1>
+    </header>
+    <p>
+      This webpage is designed to work offline. You can access its content even
+      without an internet connection.
+    </p>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("/sw.js")
+          .then((registration) => {
+            console.log("Service worker registered:", registration);
+          })
+          .catch((error) => {
+            console.error("Service worker registration failed:", error);
+          });
+      }
+
+      // Service worker logic
+      self.addEventListener("install", (event) => {
+        event.waitUntil(
+          caches.open("my-cache").then((cache) => {
+            return cache.addAll([
+              "/", // Cache the root page
+              "style.css", // Cache your stylesheet
+              "script.js", // Cache any scripts
+            ]);
+          })
+        );
+      });
+
+      self.addEventListener("fetch", (event) => {
+        event.respondWith(
+          caches.match(event.request).then((response) => {
+            if (response) {
+              return response; // Return the cached response if it exists
+            }
+            return fetch(event.request).then((networkResponse) => {
+              if (networkResponse.ok) {
+                const cache = caches.open("my-cache");
+                cache.put(event.request, networkResponse.clone());
+              }
+              return networkResponse;
+            });
+          })
+        );
+      });
+    </script>
+  </body>
+</html>
